@@ -1,0 +1,157 @@
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Montserrat', sans-serif; }
+body { background: #080c14; overflow: hidden; position: relative; }
+
+#weatherCanvas { position: absolute; inset: 0; z-index: 3; pointer-events: none; }
+
+.hero {
+    position: relative; width: 100%; height: 100vh;
+    background: url("../img/peta.png") no-repeat center center;
+    background-size: cover; display: flex; justify-content: center; align-items: center;
+}
+
+/* overlay asli */
+.overlay {
+    position: absolute; inset: 0;
+    background: radial-gradient(circle, rgba(10, 15, 25, 0.5) 0%, rgba(5, 7, 10, 0.95) 100%);
+    z-index: 1;
+}
+
+/* ===== FIX: layer gelap KHUSUS background ===== */
+.dark-layer{
+    position:absolute;
+    inset:0;
+    background:rgba(0,0,0,0);
+    transition:0.4s ease;
+    z-index:4;               /* di atas background, di bawah konten */
+    pointer-events:none;
+}
+.hero.menu-active .dark-layer{
+    background:rgba(0,0,0,0.6);
+}
+
+/* ================= CONTENT ================= */
+.content-wrapper {
+    position: relative; z-index: 10;
+    display: flex; flex-direction: column; align-items: center; text-align: center;
+    width: 100%; max-width: 1200px; padding: 20px;
+}
+
+/* ================= TYPOGRAPHY ================= */
+.title-section h1 {
+    font-size: clamp(22px, 3.5vw, 34px); color: #ffffff; font-weight: 700; line-height: 1.2;
+}
+.title-section h1 span {
+    color: #b8ff4d; text-shadow: 0 0 15px rgba(184, 255, 77, 0.3);
+}
+.badge-classic {
+    margin-top: 15px; background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(8px); padding: 8px 22px; border-radius: 25px;
+    display: inline-block; font-size: 13px; color: #ffffff;
+}
+
+/* ================= CIRCULAR MENU ================= */
+.circular-menu-wrapper {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    margin: 40px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo-trigger {
+    position: relative;
+    z-index: 100;
+    cursor: pointer;
+}
+
+.logo-glow {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    width: 150px; height: 150px; background: rgba(184, 255, 77, 0.1);
+    filter: blur(40px); z-index: -1;
+}
+
+.floating-logo {
+    width: 110px;
+    filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5));
+    animation: float 4s ease-in-out infinite;
+}
+
+.menu-items {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.item {
+    position: absolute;
+    width: 65px;
+    height: 65px;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(184, 255, 77, 0.3);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    opacity: 0;
+    transform: scale(0) translateY(20px);   /* posisi awal */
+    transition:
+      transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+      opacity 0.4s ease;
+
+    z-index: 50;
+    pointer-events: none;
+}
+
+.item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;    /* bikin gambar memenuhi kotak */
+  border-radius: 50%;  /* kalau item bulat */
+}
+
+
+/* AKTIVASI MENU */
+.circular-menu-wrapper.active .item {
+    opacity: 1;
+    transform: scale(1) translateY(0);   /* animasi muncul */
+    pointer-events: auto;
+}
+
+.circular-menu-wrapper.active .i1 { transform: rotate(0deg) translateY(-145px) rotate(0deg); }
+.circular-menu-wrapper.active .i2 { transform: rotate(51deg) translateY(-145px) rotate(-51deg); }
+.circular-menu-wrapper.active .i3 { transform: rotate(102deg) translateY(-145px) rotate(-102deg); }
+.circular-menu-wrapper.active .i4 { transform: rotate(153deg) translateY(-145px) rotate(-153deg); }
+.circular-menu-wrapper.active .i5 { transform: rotate(204deg) translateY(-145px) rotate(-204deg); }
+.circular-menu-wrapper.active .i6 { transform: rotate(255deg) translateY(-145px) rotate(-255deg); }
+.circular-menu-wrapper.active .i7 { transform: rotate(306deg) translateY(-145px) rotate(-306deg); }
+
+/* ================= DELAY BERTAHAP (BIAR KEREN) ================= */
+.circular-menu-wrapper.active .i1 { transition-delay: 0s; }
+.circular-menu-wrapper.active .i2 { transition-delay: .05s; }
+.circular-menu-wrapper.active .i3 { transition-delay: .1s; }
+.circular-menu-wrapper.active .i4 { transition-delay: .15s; }
+.circular-menu-wrapper.active .i5 { transition-delay: .2s; }
+.circular-menu-wrapper.active .i6 { transition-delay: .25s; }
+.circular-menu-wrapper.active .i7 { transition-delay: .3s; }
+/* ================= TEKNISI ================= */
+.tech-header { margin: 40px 0 25px 0; position: relative; }
+.animate-text { color: #ffffff; font-size: 14px; text-transform: uppercase; letter-spacing: 3px; font-weight: 700; overflow: hidden; white-space: nowrap; margin: 0 auto; width: fit-content; animation: revealText 6s infinite; }
+.line-animated { width: 0; height: 2px; background: #b8ff4d; margin: 10px auto; animation: growLine 6s infinite; }
+
+@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+@keyframes revealText { 0% { opacity: 0; width: 0; } 10% { opacity: 1; width: 100%; } 80% { opacity: 1; width: 100%; } 100% { opacity: 0; width: 0; } }
+@keyframes growLine { 0% { width: 0; } 15% { width: 60px; } 80% { width: 60px; } 100% { width: 0; } }
+
+.technician-grid { display: flex; gap: 15px; justify-content: center; width: 100%; }
+.tech-card-small { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); padding: 15px; border-radius: 18px; width: 180px; transition: all 0.4s ease; display: flex; flex-direction: column; align-items: center; }
+.tech-card-small:hover { transform: translateY(-8px); border-color: #b8ff4d; }
+.tech-avatar-mini { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, #7fb6c9, #b8ff4d); color: #0f172a; font-weight: 700; font-size: 14px; display: flex; align-items: center; justify-content: center; margin-bottom: 10px; }
+.tech-card-small h3 { color: #fff; font-size: 12px; font-weight: 600; height: 30px; display: flex; align-items: center; }
+.btn-mini { background: rgba(127, 182, 201, 0.1); border: 1px solid rgba(127, 182, 201, 0.2); color: #fff; padding: 6px 15px; border-radius: 8px; font-size: 10px; font-weight: 600; cursor: pointer; width: 100%; transition: 0.3s; }
+.tech-card-small:hover .btn-mini { background: #7fb6c9; color: #fff; }
